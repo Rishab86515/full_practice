@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int countPairs(vector<int>& d) {
+        unordered_map<int,int>mp;
+        int mod=1e9+7,ans=0;
+        for(int i=0;i<d.size();i++)
+        {
+            for(int p=1;p<=(1<<21);p*=2)
+            {
+                if(mp.find(p-d[i])!=mp.end()){
+                    ans=(ans+mp[p-d[i]])%mod;
+                }
+            }
+            mp[d[i]]++;
+        }
+        return ans;
+    }
+};
