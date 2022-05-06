@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        //we will take a min priority queue to store min time
+        //and with each min time we will find the path 
+        //whatever will the max time in the path will be te overal time
+        //Ex-2
+        //0->1->2->3->4->5->16->15->14->13->12->11->10->9-.8->7->6
+        //ans=16
+        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        int mx=0,m=grid.size(),n=grid[0].size();
+        vector<vector<bool>>vec(m,vector<bool>(n,false));
+        int row[4]={1,-1,0,0};
+        int col[4]={0,0,1,-1};
+        pq.push({grid[0][0],{0,0}});
+        while(!pq.empty()){
+            auto cur=pq.top();
+            vec[cur.second.first][cur.second.second]=true;
+            pq.pop();
+            mx=max(mx,cur.first);
+            if(cur.second.first==m-1&&cur.second.second==n-1)
+                break;
+            for(int i=0;i<4;i++){
+                int rr=cur.second.first+row[i];
+                int cc=cur.second.second+col[i];
+                if(rr>=0&&cc>=0&&rr<m&&cc<n&&!vec[rr][cc])
+                    pq.push({grid[rr][cc],{rr,cc}});
+            }
+            
+        }
+        return mx;
+    }
+};
