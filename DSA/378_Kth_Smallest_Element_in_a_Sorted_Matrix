@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n=matrix.size(),l=matrix[0][0],r=matrix[n-1][n-1];
+        while(l<=r)
+        {
+            int mid=(l+r)/2;
+            int count=smallerorEqual(matrix,mid);
+            cout<<count<<"\n";
+            if(count>=k)
+                r=mid-1;
+            else
+                l=mid+1;
+        }
+        return l;
+    }
+    int smallerorEqual(vector<vector<int>>matrix, int val)
+    {
+        int ans=0;
+        for(int i=0;i<matrix.size();i++)
+        {
+            if(matrix[i][0]>val)
+                return ans;
+            ans += upper_bound(matrix[i].begin(), matrix[i].end(), val) - matrix[i].begin();
+        }
+        return ans;
+    }
+};
+
+/*
+1  5  9
+10 11 13
+12 13 15
+    
+l=1 r=15  m=8
+count=2(1,5)  { ans=ans+(9 ka index pass karega)-begin}=>ans=2
+l=9 r=15 m=12 { ans=ans+(matrix[0].end-matrix[0].begin)}=>ans=3
+                ans=3+(13 ka index pass karega-matrix[1].begin)=>ans=5
+                ans=5+(13 ka index pass karega-matrix[2].begin)=>ans=6
+l=13 r=15 m=14 { ans=ans+(matrix[0].end-matrix[0].begin)}=>ans=3
+                ans=3+(matrix[0].end-matrix[1].begin)=>ans=6
+                ans=5+(15 ka index pass karega-matrix[2].begin)=>ans=8
+*/
